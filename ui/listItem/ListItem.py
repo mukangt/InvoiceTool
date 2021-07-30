@@ -2,10 +2,10 @@
 Author: mukangt
 Date: 2021-07-14 15:45:20
 LastEditors: mukangt
-LastEditTime: 2021-07-15 08:45:52
+LastEditTime: 2021-07-30 11:43:57
 Description: 
 '''
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class ListItem(QtWidgets.QListWidgetItem):

@@ -2,14 +2,14 @@
 Author: mukangt
 Date: 2021-07-13 17:53:43
 LastEditors: mukangt
-LastEditTime: 2021-07-13 17:56:26
+LastEditTime: 2021-07-30 11:43:52
 Description: 
 '''
 import sys
 
-from PyQt5 import QtWidgets
+from PySide6 import QtWidgets
 
-from ui import Dialog
+from Dialog import Dialog
 
 app = QtWidgets.QApplication(sys.argv)
 dia = Dialog()

@@ -2,7 +2,7 @@
 Author: mukangt
 Date: 2021-07-13 17:45:15
 LastEditors: mukangt
-LastEditTime: 2021-07-15 18:46:41
+LastEditTime: 2021-07-30 11:43:35
 Description: 
 '''
 import os
@@ -10,11 +10,10 @@ import shutil
 from collections import defaultdict
 
 import pandas as pd
-from PyQt5 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets
 
-from .listItem import ListItem
-from .ocr import *
-from .Ui_Dialog import Ui_Dialog
+from ocr import localOcr
+from ui import Ui_Dialog, ListItem
 
 
 class Dialog(QtWidgets.QDialog):
@@ -141,7 +140,7 @@ class Dialog(QtWidgets.QDialog):
             return
 
         # read excel template
-        df = pd.read_excel('./ui/resource/template.xlsx',
+        df = pd.read_excel('./resource/template.xlsx',
                            sheet_name='增值税普票',
                            header=1)
         for i, info in enumerate(self.fileInfo.values()):
