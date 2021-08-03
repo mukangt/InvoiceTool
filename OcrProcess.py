@@ -2,7 +2,7 @@
 Author: mukangt
 Date: 2021-08-02 17:01:53
 LastEditors: mukangt
-LastEditTime: 2021-08-03 17:01:28
+LastEditTime: 2021-08-03 18:52:08
 Description: 
 '''
 import os
@@ -25,6 +25,7 @@ class OcrProcess(QtCore.QObject):
         super().__init__()
 
         self.win = MainWindow()
+        self.win.setWindowIcon(QtGui.QIcon(":/icon.png"))
 
         self.initOcrMethod()
 

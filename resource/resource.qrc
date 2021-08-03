@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+<file alias="logo.png">images/logo.png</file>
+<file alias="icon.png">images/icon.png</file>
+<file alias="template.xlsx">files/template.xlsx</file>
+</qresource>
+</RCC>
