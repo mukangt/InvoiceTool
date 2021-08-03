@@ -2,16 +2,16 @@
 Author: mukangt
 Date: 2021-07-13 17:53:43
 LastEditors: mukangt
-LastEditTime: 2021-07-30 11:43:52
+LastEditTime: 2021-08-03 16:26:17
 Description: 
 '''
 import sys
 
 from PySide6 import QtWidgets
 
-from Dialog import Dialog
+from OcrProcess import OcrProcess
 
 app = QtWidgets.QApplication(sys.argv)
-dia = Dialog()
-dia.show()
-sys.exit(app.exec_())
+ocr = OcrProcess()
+ocr.win.show()
+sys.exit(app.exec())
