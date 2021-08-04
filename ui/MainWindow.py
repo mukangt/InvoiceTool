@@ -2,10 +2,9 @@
 Author: mukangt
 Date: 2021-07-13 17:45:15
 LastEditors: mukangt
-LastEditTime: 2021-08-03 17:08:28
+LastEditTime: 2021-08-04 16:03:20
 Description: 
 '''
-import os
 
 from PySide6 import QtCore, QtWidgets
 
@@ -16,9 +15,9 @@ from .Ui_MainWindow import Ui_MainWindow
 class MainWindow(QtWidgets.QMainWindow):
 
     # initialize signals
+    sigFileUpdated = QtCore.Signal(list)
     sigFileNumChanged = QtCore.Signal(int)
-    sigFileLoaded = QtCore.Signal(list)
-    sigUsernameChanged = QtCore.Signal(str)
+    sigUserNameChanged = QtCore.Signal(str)
     sigProgressBarChanged = QtCore.Signal(int)
     sigStartClicked = QtCore.Signal(dict)
 
@@ -31,7 +30,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle('票据报销小工具')
 
         # saving filenames & invoice info
-        self.fileInfo = {'dirname': '', 'files': {}}
+        # self.fileInfo = {'dirname': '', 'files': {}}
 
         self.initUI()
 
@@ -81,8 +80,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # progress bar change
         self.sigProgressBarChanged.connect(self.slotProgressBarUpdate)
 
-        # export ocr result to excel
-        # self.ui.pushButton_export.clicked.connect(self.slotExport)
+        # loaded files updated
+        self.sigFileUpdated.connect(self.slotFileUpdate)
 
     @QtCore.Slot(int)
     def slotProgressBarUpdate(self, value: int) -> None:
@@ -111,27 +110,29 @@ class MainWindow(QtWidgets.QMainWindow):
         if not okay:
             return
 
-        self.fileInfo['dirname'] = os.path.dirname(filenames[0])
-        self.fileInfo['files'] = {filename: {} for filename in filenames}
+        # self.fileInfo['dirname'] = os.path.dirname(filenames[0])
+        # self.fileInfo['files'] = {filename: {} for filename in filenames}
+        self.sigFileUpdated.emit(filenames)
 
-        self.sigFileNumChanged.emit(len(self.fileInfo['files']))
+    @QtCore.Slot(list)
+    def slotFileUpdate(self, filenames):
+        self.sigFileNumChanged.emit(len(filenames))
         self.sigProgressBarChanged.emit(0)
 
     @QtCore.Slot()
     def slotClear(self):
-        self.fileInfo.clear()
-        self.sigFileNumChanged.emit(len(self.fileInfo))
+        self.sigFileUpdated.emit([])
 
     @QtCore.Slot()
     def slotStart(self):
 
-        if not self.isInputUserName():
+        if not self.isValidUserName():
             return
 
-        if len(self.fileInfo) <= 0:
-            return
+        # if len(self.fileInfo) <= 0:
+        #     return
 
-        self.ui.progressBar.setMaximum(len(self.fileInfo['files']))
+        # self.ui.progressBar.setMaximum(len(self.fileInfo['files']))
 
         ocrMethodId = 0
 
@@ -148,13 +149,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.sigStartClicked.emit({'ocrMethodId': ocrMethodId, 'args': None})
 
-    def isInputUserName(self):
-        self.username = self.ui.lineEdit_userName.text().strip()
-        if len(self.username) == 0:
+    def isValidUserName(self):
+        userName = self.ui.lineEdit_userName.text().strip()
+        if len(userName) == 0:
             self.ui.lineEdit_userName.setStyleSheet(
                 "QLineEdit{border:1px solid rgb(255, 0, 0);}")
             return False
         else:
             self.ui.lineEdit_userName.setStyleSheet(
                 "QLineEdit{border:1px solid rgb(0, 0, 0);}")
+
+            self.sigUserNameChanged.emit(userName)
             return True

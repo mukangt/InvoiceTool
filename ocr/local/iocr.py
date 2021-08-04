@@ -2,7 +2,7 @@
 Author: feng
 Date: 2021-07-15 16:27:22
 LastEditors: mukangt
-LastEditTime: 2021-07-15 18:14:57
+LastEditTime: 2021-08-04 15:10:47
 Description: 
 '''
 import re
@@ -59,7 +59,7 @@ def ocr(filename, args=None):
 
             if match and pat == PAT_CHECKCODE:
                 data['校验码'] = match.string.replace(' ', '')
-                data['校验码后六位'] = match.string.replace(' ', '')[-7:]
+                data['校验码后六位'] = match.string.replace(' ', '')[-6:]
 
         data['购方税号'] = TAX_NUM
 
