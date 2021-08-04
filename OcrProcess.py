@@ -2,7 +2,7 @@
 Author: mukangt
 Date: 2021-08-02 17:01:53
 LastEditors: mukangt
-LastEditTime: 2021-08-04 16:03:02
+LastEditTime: 2021-08-04 16:40:22
 Description: 
 '''
 import os
@@ -37,7 +37,7 @@ class OcrProcess(QtCore.QObject):
 
     def init(self):
         self.win = MainWindow()
-        self.win.setWindowIcon(QtGui.QIcon(':/icon.png'))
+        self.win.setWindowIcon(QtGui.QIcon(':/logo.ico'))
 
         self.fileInfo = {}
 
