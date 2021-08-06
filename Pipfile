@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyside6 = "*"
+xlwings = "*"
+pymupdf = "*"
+auto-py-to-exe = "*"
+pywin32 = "==225"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
