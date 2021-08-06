@@ -2,7 +2,7 @@
 Author: mukangt
 Date: 2021-08-02 17:01:53
 LastEditors: mukangt
-LastEditTime: 2021-08-04 16:40:22
+LastEditTime: 2021-08-06 15:51:12
 Description: 
 '''
 import os
@@ -19,8 +19,6 @@ from ui import MainWindow
 class OcrProcess(QtCore.QObject):
     # define signals
     sigOperate = QtCore.Signal(dict)
-
-    # sigFinished = QtCore.Signal()
 
     def __init__(self) -> None:
         super().__init__()
@@ -42,8 +40,6 @@ class OcrProcess(QtCore.QObject):
         self.fileInfo = {}
 
         self.saveDir = ''
-
-        self.userName = ''
 
         self.excelTitles = [
             '序号', '发票种类代码', '发票代码', '发票号码', '发票页码', '开票日期', '校验码后六位', '购方税号',
@@ -79,13 +75,14 @@ class OcrProcess(QtCore.QObject):
     def bindOcrSigSlot(self):
         self.win.sigStartClicked.connect(self.slotStartOcr)
         self.win.sigFileUpdated.connect(self.slotFileUpdate)
-        self.win.sigUserNameChanged.connect(self.slotUserName)
+        # self.win.sigUserNameChanged.connect(self.slotUserName)
         # self.workerThread.fini.connect(self.worker.deleteLater)
         # self.worker.sigResultReady.connect(self.slotReceiveResult)
         # self.sigOperate.connect(self.worker.doWork)
-    @QtCore.Slot(str)
-    def slotUserName(self, userName):
-        self.userName = userName
+
+    # @QtCore.Slot(str)
+    # def slotUserName(self, userName):
+    #     self.userName = userName
 
     @QtCore.Slot(list)
     def slotFileUpdate(self, filenames):
@@ -117,7 +114,7 @@ class OcrProcess(QtCore.QObject):
                     '_',
                     ocrResult['发票号码'],
                     '_',
-                    self.userName,
+                    self.win.userName,
                     '.pdf',
                 ]))
             shutil.copyfile(filename, dstPath)
@@ -141,7 +138,7 @@ class OcrProcess(QtCore.QObject):
         app = xw.App(visible=False, add_book=False)
         wb = app.books.add()
         sheet = wb.sheets['sheet1']
-        sheet.value = '增值税普票'
+        sheet.name = '增值税普票'
         sheet.autofit()
         # sheet.range('A1').value = self.excelDescription
 
@@ -164,7 +161,7 @@ class OcrProcess(QtCore.QObject):
             # df.loc[i + 1] = [info.get(col, '') for col in df.columns]
         wb.save(
             os.path.join(self.saveDir,
-                         ''.join(['增值税普票_', self.userName, '.xlsx'])))
+                         ''.join(['增值税普票_', self.win.userName, '.xlsx'])))
         wb.close()
         app.quit()
         # df.to_excel(os.path.join(self.saveDir,

@@ -2,11 +2,12 @@
 Author: mukangt
 Date: 2021-07-13 17:45:15
 LastEditors: mukangt
-LastEditTime: 2021-08-04 16:03:20
+LastEditTime: 2021-08-06 16:03:32
 Description: 
 '''
 
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
+import os
 
 # from .Ui_Dialog import Ui_Dialog
 from .Ui_MainWindow import Ui_MainWindow
@@ -38,13 +39,26 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initUI(self):
 
-        # reset progress bar
-        self.ui.progressBar.setValue(0)
+        # reading init data from my.ini
+        appDir = QtCore.QCoreApplication.applicationDirPath()
+        iniPath = os.path.join(appDir, 'my.ini')
+        self.settings = QtCore.QSettings(iniPath, QtCore.QSettings.IniFormat)
+        self.settings.beginGroup('MAIN')
+        self.userName = self.settings.value('UserName', '').__str__()
+        self.settings.endGroup()
 
         # initialize user name input line
-        self.ui.lineEdit_userName.setPlaceholderText('请输入姓名')
-        self.ui.lineEdit_userName.setStyleSheet(
-            "QLineEdit{border:1px solid rgb(0, 0, 0);}")
+        if self.userName == '':
+            self.ui.lineEdit_userName.setPlaceholderText('请输入姓名')
+            self.ui.lineEdit_userName.setStyleSheet(
+                "QLineEdit{border:1px solid rgb(255, 0, 0);}")
+        else:
+            self.ui.lineEdit_userName.setText(self.userName)
+            self.ui.lineEdit_userName.setStyleSheet(
+                "QLineEdit{border:1px solid rgb(0, 0, 0);}")
+
+        # reset progress bar
+        self.ui.progressBar.setValue(0)
 
         # initialize radio button
         self.radioButtonGroup = QtWidgets.QButtonGroup(self)
@@ -61,7 +75,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.radioButton_cloud.hide()
         self.ui.tabWidget.hide()
 
+        # resize windows
+        self.setFixedSize(400, 300)
+
+    # def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
+    #     print(self.geometry().width(), self.geometry().height())
+    #     super().resizeEvent(event)
+
     def bindSigSlot(self):
+
         # radio button & tab widget
         self.radioButtonGroup.idClicked.connect(self.slotSetEnabledTabWidget)
 
@@ -82,6 +104,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # loaded files updated
         self.sigFileUpdated.connect(self.slotFileUpdate)
+
+        # user name changed
+        self.sigUserNameChanged.connect(self.slotUserNameSettings)
+
+    @QtCore.Slot(str)
+    def slotUserNameSettings(self, username: str) -> None:
+        self.settings.beginGroup('MAIN')
+        self.settings.setValue('UserName', username)
+        self.settings.endGroup()
 
     @QtCore.Slot(int)
     def slotProgressBarUpdate(self, value: int) -> None:
@@ -152,12 +183,13 @@ class MainWindow(QtWidgets.QMainWindow):
     def isValidUserName(self):
         userName = self.ui.lineEdit_userName.text().strip()
         if len(userName) == 0:
+            # self.userName = ''
             self.ui.lineEdit_userName.setStyleSheet(
                 "QLineEdit{border:1px solid rgb(255, 0, 0);}")
             return False
         else:
             self.ui.lineEdit_userName.setStyleSheet(
                 "QLineEdit{border:1px solid rgb(0, 0, 0);}")
-
-            self.sigUserNameChanged.emit(userName)
+            if userName != self.userName:
+                self.sigUserNameChanged.emit(userName)
             return True

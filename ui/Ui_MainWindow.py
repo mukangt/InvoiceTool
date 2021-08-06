@@ -17,25 +17,23 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(450, 300)
+        MainWindow.resize(373, 425)
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(450, 300))
-        MainWindow.setMaximumSize(QSize(450, 425))
+        MainWindow.setMinimumSize(QSize(0, 0))
         font = QFont()
         font.setPointSize(12)
         MainWindow.setFont(font)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
-        self.centralwidget.setSizePolicy(sizePolicy)
-        self.verticalLayout = QVBoxLayout(self.centralwidget)
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.gridLayout_3 = QGridLayout(self.centralwidget)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setSizeConstraint(QLayout.SetMinimumSize)
         self.label_userName = QLabel(self.centralwidget)
         self.label_userName.setObjectName(u"label_userName")
         sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
@@ -72,7 +70,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.lineEdit_userName)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.gridLayout_3.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
 
         self.frame = QFrame(self.centralwidget)
         self.frame.setObjectName(u"frame")
@@ -123,7 +121,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
 
-        self.verticalLayout.addWidget(self.frame)
+        self.gridLayout_3.addWidget(self.frame, 1, 0, 1, 1)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -151,7 +149,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.radioButton_cloud)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.gridLayout_3.addLayout(self.horizontalLayout, 2, 0, 1, 1)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -182,7 +180,7 @@ class Ui_MainWindow(object):
         self.tab_ecloud.setObjectName(u"tab_ecloud")
         self.tabWidget.addTab(self.tab_ecloud, "")
 
-        self.verticalLayout.addWidget(self.tabWidget)
+        self.gridLayout_3.addWidget(self.tabWidget, 3, 0, 1, 1)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
@@ -217,13 +215,13 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.progressBar, 1, 0, 1, 2)
 
 
-        self.verticalLayout.addLayout(self.gridLayout)
+        self.gridLayout_3.addLayout(self.gridLayout, 4, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.pushButton_start.setDefault(True)
 
 
