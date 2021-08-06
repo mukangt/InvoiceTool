@@ -2,7 +2,7 @@
 Author: mukangt
 Date: 2021-07-13 17:45:15
 LastEditors: mukangt
-LastEditTime: 2021-08-06 16:03:32
+LastEditTime: 2021-08-06 16:36:55
 Description: 
 '''
 
@@ -41,7 +41,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # reading init data from my.ini
         appDir = QtCore.QCoreApplication.applicationDirPath()
-        iniPath = os.path.join(appDir, 'my.ini')
+        iniPath = os.path.join(appDir, '.ini')
         self.settings = QtCore.QSettings(iniPath, QtCore.QSettings.IniFormat)
         self.settings.beginGroup('MAIN')
         self.userName = self.settings.value('UserName', '').__str__()
@@ -188,8 +188,10 @@ class MainWindow(QtWidgets.QMainWindow):
                 "QLineEdit{border:1px solid rgb(255, 0, 0);}")
             return False
         else:
+
             self.ui.lineEdit_userName.setStyleSheet(
                 "QLineEdit{border:1px solid rgb(0, 0, 0);}")
             if userName != self.userName:
                 self.sigUserNameChanged.emit(userName)
+                self.userName = userName
             return True
