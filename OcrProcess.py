@@ -2,7 +2,7 @@
 Author: mukangt
 Date: 2021-08-02 17:01:53
 LastEditors: mukangt
-LastEditTime: 2021-08-06 15:51:12
+LastEditTime: 2021-08-10 17:52:21
 Description: 
 '''
 import os
@@ -135,30 +135,39 @@ class OcrProcess(QtCore.QObject):
 
     def exportExcel(self):
         # new excel and save
-        app = xw.App(visible=False, add_book=False)
+        app = xw.App(visible=False)
+        app.display_alerts = False
+        app.screen_updating = False
+        
         wb = app.books.add()
         sheet = wb.sheets['sheet1']
         sheet.name = '增值税普票'
-        sheet.autofit()
-        # sheet.range('A1').value = self.excelDescription
 
         colNum = len(self.excelTitles)
-        rowNum = len(self.fileInfo) + 2
-        sheet.range((1, 1), (rowNum, colNum)).api.NumberFormat = '@'
-        sheet.range(1, 1).value = self.excelTitles
-        sheet.range(2, 1).value = self.excelExample
+        rowNum = len(self.fileInfo) + 1
+
+        rangeAll = sheet.range((1, 1), (rowNum, colNum))
+        rangeAll.api.NumberFormat = '@'
+        rangeAll.api.HorizontalAlignment = -4108
+
+        rangeTitle = sheet.range((1, 1), (1, colNum))
+        rangeTitle.api.Font.Bold = True
+        rangeTitle.color = 000, 255, 000
+        rangeTitle.value = self.excelTitles
+        # sheet.range(2, 1).value = self.excelExample
 
         # df = pd.read_excel(':/template.xlsx', sheet_name='增值税普票', header=1)
         for i, info in enumerate(self.fileInfo.values()):
             info['序号'] = str(i + 1)
             # row = 'A{}'.format(i + 3)
             # sheet.range((row,1), (row,colNum)).api.NumberFormat = "@"
-            sheet.range('A{}'.format(i + 3)).value = [
+            sheet.range('A{}'.format(i + 2)).value = [
                 info.get(title, '') for title in self.excelTitles
             ]
 
             # info['序号'] = i + 1
             # df.loc[i + 1] = [info.get(col, '') for col in df.columns]
+        sheet.autofit()
         wb.save(
             os.path.join(self.saveDir,
                          ''.join(['增值税普票_', self.win.userName, '.xlsx'])))
